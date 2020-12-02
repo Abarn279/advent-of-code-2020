@@ -5,7 +5,7 @@ with open('./2.txt') as f:
 
 valid = 0
 for line in inp:
-    [low, high, char, pw] = re.match('(\d+)-(\d+) (\w): (\w+)', line).groups()
+    [low, high, char, pw] = re.match(r'(\d+)-(\d+) (\w): (\w+)', line).groups()
     
     count = len([i for i in pw if i == char])
 
