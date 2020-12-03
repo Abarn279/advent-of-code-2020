@@ -1,4 +1,4 @@
-with open('./3.txt') as f:
+with open('./inp/03.txt') as f:
     inp = [line.rstrip() for line in f.readlines()]
 
 grid = {}

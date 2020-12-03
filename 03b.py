@@ -4,7 +4,7 @@ def product(ary):
         prod *= ary[i]
     return prod
 
-with open('./3.txt') as f:
+with open('./inp/03.txt') as f:
     inp = [line.rstrip() for line in f.readlines()]
 
 def get_trees(x, y):

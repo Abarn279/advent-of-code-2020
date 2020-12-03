@@ -7,7 +7,7 @@ def do_sol(inp):
         if sum(c) == 2020:
             return c[0] * c[1] * c[2]
 
-with open('./1.txt') as f:
+with open('./inp/01.txt') as f:
     inp = list(map(int, [line.rstrip() for line in f.readlines()]))
 
 print(do_sol(inp))

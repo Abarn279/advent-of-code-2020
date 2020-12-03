@@ -1,6 +1,6 @@
 import re
 
-with open('./2.txt') as f:
+with open('./inp/02.txt') as f:
     inp = [line.rstrip() for line in f.readlines()]
 
 valid = 0
