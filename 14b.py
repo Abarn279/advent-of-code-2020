@@ -31,10 +31,23 @@ for prog in progs:
     mask = prog.mask[::-1] # Reverse so that mask indeces match up with bit indeces
 
     for command in prog.commands:
-        val = command[1]
+        addresses_to_update = [command[0]]
+
         for i in range(36): 
-            if mask[i].isdigit():
-                val = set_bit(val, i, int(mask[i]))
-        addresses[command[0]] = val
+            if mask[i] == '0':
+                continue
+            elif mask[i] == '1':
+                for a_i in range(len(addresses_to_update)):
+                    addresses_to_update[a_i] = set_bit(addresses_to_update[a_i], i, 1)
+            elif mask[i] == 'X':
+                new_addresses_to_update = []
+                for a in addresses_to_update:
+                    new_addresses_to_update.append(set_bit(a, i, 0))
+                    new_addresses_to_update.append(set_bit(a, i, 1))
+                addresses_to_update = new_addresses_to_update
+        
+        for a in addresses_to_update:
+            addresses[a] = command[1]
+
 
 print(sum(i for i in addresses.values()))
