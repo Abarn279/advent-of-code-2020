@@ -74,6 +74,12 @@ class Vector4(Vector3):
         return super().manhattan_distance(other) + abs(self.t - other.t)
     def __repr__(self):
         return super().__repr__() + ', t: ' + str(self.t)
+    def __add__(self, other):
+        return Vector4(self.x + other.x, self.y + other.y, self.z + other.z, self.t + other.t)
+    def __hash__(self):
+        return hash(f'{self.x},{self.y},{self.z},{self.t}')
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and self.z == other.z, self.t == other.t
 
 class Grid2d:
     ''' A 2d grid that has 0,0 at the top-left corner. '''
