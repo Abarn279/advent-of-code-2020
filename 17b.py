@@ -1,16 +1,6 @@
 from collections import defaultdict
 from aoc_utils import Vector4
 
-def print_grid(grid): 
-    for z in range(min(grid.keys(), key=lambda x: x.z).z, max(grid.keys(), key=lambda x: x.z).z + 1):
-        print(f'z = {z}')
-        for y in range(min(grid.keys(), key=lambda x: x.y).y, max(grid.keys(), key=lambda x: x.y).y + 1):
-            for x in range(min(grid.keys(), key=lambda x: x.x).x, max(grid.keys(), key=lambda x: x.x).x + 1):
-                print(grid[Vector3(x, y, z)], end="")
-            print()
-        print()
-
-
 def get_active_neighbors(grid, pos):
     ''' Get all active neighbors in the grid for a given point '''
     return sum(1 for d in DIRECTIONS if grid[pos + d] == '#')
@@ -30,8 +20,6 @@ for z in [0, 2]:
         for y in [0, 1, 2]:
             for x in [0, 1, 2]:
                     grid4d[Vector4(x, y, z, w)] = '.'
-
-# print_grid(grid4d)
 
 # Run cycles
 for cycle in range(6):
@@ -54,7 +42,5 @@ for cycle in range(6):
                         copy_grid[pos] = '#' if get_active_neighbors(grid4d, pos) == 3 else '.'
 
     grid4d = copy_grid
-    # print(f'------------------------------------------\nAfter {str(cycle + 1)} cycles:\n')
-    # print_grid(grid3d)
 
 print(sum(1 for i in grid4d.values() if i == '#'))
