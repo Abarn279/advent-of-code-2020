@@ -28,6 +28,7 @@ def matches(message, rule):
             for pre, post in get_splits(message):
                 if matches(pre, sub_rules[0]) and matches(post, ' '.join(sub_rules[1:])):
                     does_match = True
+                    break
     
     memo[(message, rule)] = does_match
     return does_match
@@ -39,7 +40,7 @@ with open('./inp/19.txt') as f:
     messages = messages.split('\n')
 
 # uncomment for part 2
-# rules[8] = '42 | 42 8'
-# rules[11] = '42 31 | 42 11 31'
+rules[8] = '42 | 42 8'
+rules[11] = '42 31 | 42 11 31'
 
 print(sum(1 for i in messages if matches(i, rules[0])))
