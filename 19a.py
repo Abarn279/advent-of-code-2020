@@ -1,20 +1,36 @@
-def get_possible_strings_for_rule(rule):
+def get_splits(st):
+    for i in range(1, len(st)):
+        yield (st[:i], st[i:])
+
+memo = {}
+def matches(message, rule):
+    if (message, rule) in memo:
+        return memo[(message, rule)]
+
+    does_match = False
+    # base case. single char match
     if rule.startswith('\"'):
-        return set(rule[1:-1])
+        does_match = message == rule[1:-1]
+
+    # 'or'. call with each side
     elif '|' in rule:
         a, b = rule.split(' | ')
-        return get_possible_strings_for_rule(a).union(get_possible_strings_for_rule(b))
+        does_match = matches(message, a) or matches(message, b)
+
     else:
+        # single number
         if len(rule.split(' ')) == 1:
-            return get_possible_strings_for_rule(rules[int(rule)])
-        elif len(rule.split(' ')) == 2:
-            a, b = list(map(int,rule.split(' ')))
-            poss_a, poss_b = get_possible_strings_for_rule(rules[a]), get_possible_strings_for_rule(rules[b])
-            return set((i + j for i in poss_a for j in poss_b))
+            does_match = matches(message, rules[int(rule)])
+
         else:
-            a, b, c = list(map(int,rule.split(' ')))
-            poss_a, poss_b, poss_c = get_possible_strings_for_rule(rules[a]), get_possible_strings_for_rule(rules[b]), get_possible_strings_for_rule(rules[c])
-            return set((i + j + k for i in poss_a for j in poss_b for k in poss_c))
+            # multiple nums 'and' together
+            sub_rules = rule.split(' ')
+            for pre, post in get_splits(message):
+                if matches(pre, sub_rules[0]) and matches(post, ' '.join(sub_rules[1:])):
+                    does_match = True
+    
+    memo[(message, rule)] = does_match
+    return does_match
 
 # get input
 with open('./inp/19.txt') as f:
@@ -22,5 +38,8 @@ with open('./inp/19.txt') as f:
     rules = {int(i.split(': ')[0]):i.split(': ')[1] for i in rules.split('\n')}
     messages = messages.split('\n')
 
-s = get_possible_strings_for_rule(rules[0])
-print(sum(1 for i in messages if i in s))
+# uncomment for part 2
+# rules[8] = '42 | 42 8'
+# rules[11] = '42 31 | 42 11 31'
+
+print(sum(1 for i in messages if matches(i, rules[0])))
